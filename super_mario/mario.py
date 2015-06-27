@@ -25,6 +25,7 @@ class Mario(pygame.sprite.Sprite):
         self.change_x = 0.0
         self.speed = 0
         self.gravity = 0
+        self.__anti_gravity = False
         self.__change_y = 0.0
         self.__max_vel = PY_MAX_MARIO_WALK_VEL
         self.__speed_acc = PY_MAX_WALK_ACC
@@ -71,7 +72,6 @@ class Mario(pygame.sprite.Sprite):
         if self.state == MARIO_STATE_NORMAL:
             if self.change_x:
                 frame = int(pos % 30 / 10) + 1
-                print(frame)
                 if self.direction == PY_RIGHT:
                     self.image = self.walking_frames_r[frame]
                 else:
@@ -141,16 +141,14 @@ class Mario(pygame.sprite.Sprite):
 
         else:
             seconds = self.level.physics_info['seconds']
+            anti_gravity_factor = 0
+            if self.__anti_gravity:
+                anti_gravity_factor = - PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
 
-            self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
-            if self.gravity >= PY_JUMP_Y_MAX_FALLING_ACC:
-                self.gravity = PY_JUMP_Y_MAX_FALLING_RST * seconds
+            self.gravity = PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+            self.change_y += anti_gravity_factor + self.gravity
 
-            self.change_y += -(PY_JUMP_X_VELOCITY_1 * seconds) + self.gravity
-            if (self.change_y > PY_JUMP_Y_MAX_FALLING_ACC * seconds):
-                self.change_y = PY_JUMP_Y_MAX_FALLING_RST * seconds
-
-            print("gravity: {}".format(self.change_y))
+            print("gravity: {} - change y: {}".format(self.gravity, self.change_y))
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -169,14 +167,11 @@ class Mario(pygame.sprite.Sprite):
         platform_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
         self.rect.y -= 2
 
-
-        if self.state == MARIO_STATE_JUMPING:
-            self.change_y = -PY_JUMP_Y_HOLDING_GRAVITY_1
-
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
-            self.change_y = - PY_JUMP_X_VELOCITY_1 * self.level.physics_info['seconds']
+            self.change_y = -PY_JUMP_Y_VELOCITY_1 * self.level.physics_info['seconds']
             self.gravity = 0
+            self.__anti_gravity = True
 
         print("jump: {}".format(self.change_y))
 
@@ -249,3 +244,11 @@ class Mario(pygame.sprite.Sprite):
             self.__max_vel = PY_MAX_MARIO_WALK_VEL
             self.__speed_acc = PY_MARIO_WALK_ACC
         self.__running = running
+
+    @property
+    def fight_gravity(self):
+        return self.__anti_gravity
+
+    @fight_gravity.setter
+    def fight_gravity(self, fight):
+        self.__anti_gravity = fight

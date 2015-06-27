@@ -61,14 +61,24 @@ def main():
             if event.type == pygame.QUIT: # If user clicked close
                 done = True # Flag that we are done so we exit this loop
 
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_s:
+                    player.is_running = True
+                if event.key == pygame.K_a and player.state != config.MARIO_STATE_JUMPING:
+                    player.jump()
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_s:
+                    player.is_running = False
+                if event.key == pygame.K_a:
+                    player.fight_gravity = False
+
+
         keys = pygame.key.get_pressed()
-        player.is_running = bool(keys[pygame.K_s])
         if keys[pygame.K_LEFT]:
             player.go_left()
         if keys[pygame.K_RIGHT]:
             player.go_right()
-        if keys[pygame.K_a]:
-            player.jump()
         if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
             player.stop()
 
