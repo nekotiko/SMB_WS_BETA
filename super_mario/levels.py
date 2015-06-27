@@ -6,7 +6,6 @@ __author__ = 'bakeneko'
 import pygame
 
 from utils import constants
-import platforms
 
 class Level():
     """ This is a generic super-class used to define a level.
@@ -47,7 +46,7 @@ class Level():
         """ Draw everything on this level. """
 
         # Draw the background
-        screen.fill(constants.BACKGROUND_BLUE)
+        screen.fill(constants.BACKGROUND_BLUE,  None)
 
 
         # Draw all the sprite lists that we have

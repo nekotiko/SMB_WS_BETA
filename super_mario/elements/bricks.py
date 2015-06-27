@@ -1,13 +1,12 @@
+from utils.sprite_loader import get_pipe
 from utils.constants import BRICK_SIZE_MULTIPLIER, BLACK, WHITE
 from utils.sprite_loader import IMAGE_SLIDER
 
 __author__ = 'bakeneko'
 
 import pygame as pg
-#from .. import setup
+
 from utils import constants as c
-#from . import powerups
-#from . import coin
 
 
 class BrickPlatform(pg.sprite.Sprite):
@@ -31,7 +30,7 @@ class Pipe(pg.sprite.Sprite):
 
     def __init__(self, x, y, size=1):
         pg.sprite.Sprite.__init__(self)
-        self.image = IMAGE_SLIDER.get_pipe(size)
+        self.image = get_pipe(size)
         self.rect = self.image.get_rect(bottomleft=(x,y+32))
         self.mask = pg.mask.from_surface(self.image)
 

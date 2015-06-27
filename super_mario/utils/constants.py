@@ -16,7 +16,9 @@ FPS = 60
 
 SPEED = [2, 2]
 BLACK = 0, 0, 0
+ORIGINAL_BLOCK_SIZE = 16
 SIZE_MULTIPLIER = 2
+BLOCK_SIZE = ORIGINAL_BLOCK_SIZE * SIZE_MULTIPLIER
 BRICK_SIZE_MULTIPLIER = 2.69
 BACKGROUND_MULTIPLER = 2.679
 GROUND_HEIGHT = SCREEN_HEIGHT - 62
@@ -45,25 +47,25 @@ MARIO_STATE_NORMAL = 0
 MARIO_STATE_JUMPING = 1
 
 #            R    G    B
-GRAY         = (100, 100, 100)
-NAVYBLUE     = ( 60,  60, 100)
-WHITE        = (255, 255, 255)
-ALMOST_WHITE = (253, 253, 253)
-RED          = (255,   0,   0)
-GREEN        = (  0, 255,   0)
-FOREST_GREEN = ( 31, 162,  35)
-BLUE         = (  0,   0, 255)
-SKY_BLUE     = ( 39, 145, 251)
-YELLOW       = (255, 255,   0)
-ORANGE       = (255, 128,   0)
-PURPLE       = (255,   0, 255)
+GRAY         = (100, 100, 100, )
+NAVYBLUE     = ( 60,  60, 100, )
+WHITE        = (255, 255, 255, )
+ALMOST_WHITE = (253, 253, 253, )
+RED          = (255,   0,   0, )
+GREEN        = (  0, 255,   0, )
+FOREST_GREEN = ( 31, 162,  35, )
+BLUE         = (  0,   0, 255, )
+SKY_BLUE     = ( 39, 145, 251, )
+YELLOW       = (255, 255,   0, )
+ORANGE       = (255, 128,   0, )
+PURPLE       = (255,   0, 255, )
 CYAN         = (  0, 255, 255)
 BLACK        = (  0,   0,   0)
 NEAR_BLACK    = ( 19,  15,  48)
 COMBLUE      = (233, 232, 255)
 GOLD         = (255, 215,   0)
-
 BACKGROUND_BLUE = (113, 144, 254)
+
 MAP_QUESTION_BLOCK = (127, 51, 0)
 MAP_BRICK          = (0, 74, 127)
 MAP_BRICK_HOLDER    = (109, 127, 63)
@@ -71,14 +73,21 @@ MAP_SOLID_BLOCK    = (255, 200, 0)
 MAP_CLOUD_1        = (87, 0, 127)
 MAP_EMPTY          = (254, 254, 255)
 MAP_BIG_MOUNTAIN   = (255, 233, 127)
+MAP_SMALL_MOUNTAIN = (218, 255, 127)
 MAP_SHORT_PIPE     = (148, 171, 91)
 MAP_MID_PIPE       = (91, 127, 0)
 MAP_TALL_PIPE     = (178, 0, 255)
 MAP_COIN          = (255, 255, 0)
-MAP_GOOMBA_1    = (127, 255, 142)
-MAP_GOOMBA_2     =  (177, 220, 255)
-MAP_TURTLE     = (0, 127, 70)
+MAP_SINGLE_BUSH    =  (177, 220, 255)
+MAP_DOUBLE_BUSH    = (127, 255, 142)
+MAP_TRIPLE_BUSH    = (127, 0, 55)
+MAP_FLAG           = (0, 255, 0)
+MAP_SMALL_CASTLE   = (80, 63, 127)
+MAP_GOOMBA_1       = (0, 255, 255)
+MAP_TURTLE     = (127, 201, 255)
 
+SCENARIO_BIG_HILL = 0
+SCENARIO_SMALL_HILL = 1
 
 #BRICK STATES
 

@@ -2,10 +2,8 @@
 __author__ = 'bakeneko'
 
 from utils.constants import *
-from utils.sprite_loader import BricksSlider, IMAGE_SLIDER
-import math
+from utils.sprite_loader import IMAGE_SLIDER
 from utils import constants
-from platforms import MovingPlatform
 import pygame
 
 class Mario(pygame.sprite.Sprite):

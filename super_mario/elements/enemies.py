@@ -143,9 +143,37 @@ class Goomba(Enemy):
         """Put the image frames in a list to be animated"""
 
         self.frames.append(
-            IMAGE_SLIDER.get_enemies('goomba_1', c.ALMOST_WHITE))
+            IMAGE_SLIDER.get_enemies('goomba_1'))
         self.frames.append(
-            IMAGE_SLIDER.get_enemies('goomba_2', c.WHITE))
+            IMAGE_SLIDER.get_enemies('goomba_2'))
+
+        self.frames.append(pg.transform.flip(self.frames[0], False, True))
+
+
+    def jumped_on(self):
+        """When Mario squishes him"""
+        self.frame_index = 2
+
+        if (self.current_time - self.death_timer) > 500:
+            self.kill()
+
+
+
+class Turtle(Enemy):
+
+    def __init__(self,x=0, y=c.GROUND_HEIGHT, level=None, direction=c.LEFT, name='Turtle'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y-16, level, direction, name, self.setup_frames)
+        self.setup_frames()
+
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+
+        self.frames.append(
+            IMAGE_SLIDER.get_enemies('turtle_1'))
+        self.frames.append(
+            IMAGE_SLIDER.get_enemies('turtle_2'))
 
         self.frames.append(pg.transform.flip(self.frames[0], False, True))
 

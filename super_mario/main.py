@@ -16,7 +16,7 @@ def main():
 
     # Set the height and width of the screen
 
-    screen = pygame.display.set_mode(config.SIZE)
+    screen = pygame.display.set_mode(config.SIZE, pygame.DOUBLEBUF, 32)
 
     pygame.display.set_caption("Super Mario Bros!")
 
@@ -101,11 +101,7 @@ def main():
 
         # ALL CODE TO DRAW SHOULD GO BELOW THIS COMMENT
         current_level.draw(screen)
-
-
         active_sprite_list.draw(screen)
-
-        # ALL CODE TO DRAW SHOULD GO ABOVE THIS COMMENT
 
 
 
