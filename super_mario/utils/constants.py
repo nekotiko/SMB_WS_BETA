@@ -206,5 +206,11 @@ PY_JUMP_Y_FALLING_GRAVITY_3 = doc_unit_to_pixels_per_second('005D0')
 PY_JUMP_Y_MAX_FALLING_ACC = doc_unit_to_pixels_per_second('04800')
 PY_JUMP_Y_MAX_FALLING_RST = doc_unit_to_pixels_per_second('04000')
 
+PY_ENEMY_STOMP_Y_SPEED = doc_unit_to_pixels_per_second('04000')
+
+#Non offical
+PY_ENEMY_WALK_SPEED    = doc_unit_to_pixels_per_second('08000')
+
+
 ##Deduced PY
 PY_MAX_WALK_ACC = PY_MAX_MARIO_WALK_VEL - PY_MIN_MARIO_WALK_VEL

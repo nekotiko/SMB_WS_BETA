@@ -14,6 +14,9 @@ def main():
     pygame.init()
     FPS = 120
 
+    # Used to manage how fast the screen updates
+    clock = pygame.time.Clock()
+
     # Set the height and width of the screen
 
     screen = pygame.display.set_mode(config.SIZE, pygame.DOUBLEBUF, 32)
@@ -41,8 +44,6 @@ def main():
     #Loop until the user clicks the close button.
     done = False
 
-    # Used to manage how fast the screen updates
-    clock = pygame.time.Clock()
 
     # -------- Main Program Loop -----------
     while not done:
@@ -51,10 +52,9 @@ def main():
         milliseconds =  clock.tick(FPS)
         seconds = milliseconds / 1000.0 # seconds passed since last frame (float)
         playtime = current_level.physics_info['play_time'] + seconds
-        current_level.physics_info = {'current_time': milliseconds,
-                                      'seconds': seconds,
-                                       'play_time': playtime
-                                      }
+        current_level.physics_info['current_time'] = milliseconds
+        current_level.physics_info['seconds'] = seconds
+        current_level.physics_info['play_time'] = playtime
 
 
         for event in pygame.event.get(): # User did something

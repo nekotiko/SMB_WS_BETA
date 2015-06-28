@@ -22,7 +22,7 @@ class Level():
         self.enemy_list = None
         self.brick_list = None
         self.scenario_list = None
-        self.physics_info = {'play_time': 0}
+        self.physics_info = {'play_time': 0, 'seconds': 0, 'current_time': 0}
         # How far this world has been scrolled left/right
         self.world_shift = 0
         self.level_limit = -1000
@@ -52,12 +52,6 @@ class Level():
         # Draw all the sprite lists that we have
         self.scenario_list.draw(screen)
         self.platform_list.draw(screen)
-
-        for enemy in self.enemy_list:
-            enemy.rect.x += enemy.x_vel
-            #self.check_enemy_x_collisions(enemy)
-            enemy.rect.y += enemy.y_vel
-
         self.enemy_list.draw(screen)
 
 

@@ -89,7 +89,6 @@ class BricksSlider(object):
 
     def get_enemies(self, name):
         image = self._get_image(name, '../assets/enemies.png', 'enemies')
-        print("Enemy Backgound {}".format(image.get_at((0,0))))
         return image
 
     def _get_image(self, name, path, type, multiplier=SIZE_MULTIPLIER):

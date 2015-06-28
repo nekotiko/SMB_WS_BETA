@@ -3,12 +3,10 @@ __author__ = 'bakeneko'
 
 from utils.constants import *
 from utils.sprite_loader import BricksSlider, IMAGE_SLIDER
-import math
 from utils import constants
-from platforms import MovingPlatform
 import pygame
 
-class Mario(pygame.sprite.Sprite):
+class MarioFB(pygame.sprite.Sprite):
     """ This class represents the bar at the bottom that the player
     controls. """
 

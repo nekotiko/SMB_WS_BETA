@@ -1,6 +1,8 @@
 
+
 __author__ = 'bakeneko'
 
+from elements.bricks import Brick
 from utils.constants import *
 from utils.sprite_loader import IMAGE_SLIDER
 from utils import constants
@@ -104,6 +106,7 @@ class Mario(pygame.sprite.Sprite):
 
         # Check and see if we hit anything
         block_hit_list = pygame.sprite.spritecollide(self, self.level.platform_list, False)
+
         for block in block_hit_list:
 
             # Reset our position based on the top/bottom of the object.
@@ -111,24 +114,22 @@ class Mario(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
+                if isinstance(block, Brick):
+                    block.bumped()
 
             # Stop our vertical movement
             self.change_y = 0
 
-
-
-        brick_hit_list = pygame.sprite.spritecollide(self, self.level.brick_list, False)
-        for brick in brick_hit_list:
-
-            # Reset our position based on the top/bottom of the object.
-            if self.change_y > 0:
-                self.rect.bottom = brick.rect.top
-            elif self.change_y < 0:
-                self.rect.top = brick.rect.bottom
-                brick.bumped()
-
-            # Stop our vertical movement
-            self.change_y = 0
+        #let's kill some enemies. or be killed :P
+        enemies_hit_list = pygame.sprite.spritecollide(self, self.level.enemy_list, False)
+        for enemy in enemies_hit_list:
+            if enemy.rect.collidepoint(self.rect.midbottom) or \
+                enemy.rect.collidepoint(self.rect.bottomright) or \
+                enemy.rect.collidepoint(self.rect.bottomleft) : #We kill it!
+                self.change_y += -PY_ENEMY_STOMP_Y_SPEED * self.level.physics_info['seconds']
+                enemy.state = JUMPED_ON
+            else:
+                self.kill()
 
 
 
@@ -144,9 +145,10 @@ class Mario(pygame.sprite.Sprite):
                 anti_gravity_factor = - PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
 
             self.gravity = PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+            #print("Antigravity {} - gravity {}".format(anti_gravity_factor, self.gravity))
             self.change_y += anti_gravity_factor + self.gravity
 
-            print("gravity: {} - change y: {}".format(self.gravity, self.change_y))
+
 
         # See if we are on the ground.
         if self.rect.y >= constants.SCREEN_HEIGHT - self.rect.height and self.change_y >= 0:
@@ -184,7 +186,7 @@ class Mario(pygame.sprite.Sprite):
                 self.speed = self.__max_vel
 
         self.change_x = -(PY_MIN_MARIO_WALK_VEL + self.speed) * self.level.physics_info['seconds']
-        print(self.change_x)
+        #print(self.change_x)
         self.direction = PY_LEFT
 
     def go_right(self):
