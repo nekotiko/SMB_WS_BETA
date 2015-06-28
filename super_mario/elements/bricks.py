@@ -23,27 +23,22 @@ class BrickPlatform(pg.sprite.Sprite):
 class SolidPlatform(BrickPlatform):
 
     def __init__(self, x, y):
-
         BrickPlatform.__init__(self, x, y, 'solid_brick')
-
-class Pipe(pg.sprite.Sprite):
-
-    def __init__(self, x, y, size=1):
-        pg.sprite.Sprite.__init__(self)
-        self.image = get_pipe(size)
-        self.rect = self.image.get_rect(bottomleft=(x,y+32))
-        self.mask = pg.mask.from_surface(self.image)
 
 class Brick(pg.sprite.Sprite):
     """Bricks that can be destroyed"""
-    def __init__(self, x, y, contents=None, powerup_group=None, name='brick'):
+    def __init__(self, x, y, setup_frames=None, contents=None, powerup_group=None, name='brick'):
         """Initialize the object"""
 
         #self.sprite_sheet = setup.GFX['tile_set']
         pg.sprite.Sprite.__init__(self)
         self.frames = []
         self.frame_index = 0
-        self.setup_frames()
+        if setup_frames:
+            setup_frames()
+        else:
+            self.setup_frames()
+
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -109,7 +104,7 @@ class Brick(pg.sprite.Sprite):
                 self.state = c.RESTING
 
 
-    def start_bump(self, score_group):
+    def start_bump(self):
         """Transitions brick into BUMPED state"""
         self.y_vel = -6
 
@@ -140,21 +135,42 @@ class Brick(pg.sprite.Sprite):
             self.powerup_in_box = False
 
 
-class QuestionBox(pg.sprite.Sprite):
+class QuestionBox(Brick):
 
-    def __init__(self, x, y, contents='coins'):
+    def __init__(self, x, y, level, contents='coins'):
 
-        pg.sprite.Sprite.__init__(self)
+        Brick.__init__(self, x, y, self.setup_frames)
 
         self.frame_index = 0
-        self.frames = []
-        for num in xrange(1, 4):
-            self.frames.append(IMAGE_SLIDER.get_image('question_mark_{}'.format(num)))
-
+        self.level = level
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.current_time = 0
+
+    def setup_frames(self):
+        """Set the frames to a list"""
+        for num in xrange(2, -1, -1):
+            self.frames.append(IMAGE_SLIDER.get_image('question_mark_{}'.format(num)))
+        for num in xrange(0, 3):
+            self.frames.append(IMAGE_SLIDER.get_image('question_mark_{}'.format(num)))
+
+    def update(self):
+        self.current_time += 5 * self.level.physics_info['seconds']
+        if self.current_time > 5:
+            self.current_time = 0
+
+        self.frame_index = int(self.current_time)
+        self.image = self.frames[self.frame_index]
+
+        """Determines brick behavior based on state"""
+        if self.state == c.RESTING:
+            self.resting()
+        elif self.state == c.BUMPED:
+            self.bumped()
+        elif self.state == c.OPENED:
+            self.opened()
 
 
 
@@ -197,6 +213,14 @@ class BrickPiece(pg.sprite.Sprite):
             self.kill()
 
 
+
+class Pipe(pg.sprite.Sprite):
+
+    def __init__(self, x, y, size=1):
+        pg.sprite.Sprite.__init__(self)
+        self.image = get_pipe(size)
+        self.rect = self.image.get_rect(bottomleft=(x,y+32))
+        self.mask = pg.mask.from_surface(self.image)
 
 
 

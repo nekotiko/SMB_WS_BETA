@@ -112,10 +112,12 @@ class Mario(pygame.sprite.Sprite):
             # Reset our position based on the top/bottom of the object.
             if self.change_y > 0:
                 self.rect.bottom = block.rect.top
+                if self.state == MARIO_STATE_JUMPING:
+                    self.state = MARIO_STATE_NORMAL
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
                 if isinstance(block, Brick):
-                    block.bumped()
+                    block.start_bump()
 
             # Stop our vertical movement
             self.change_y = 0
@@ -173,6 +175,7 @@ class Mario(pygame.sprite.Sprite):
             self.gravity = 0
             self.__anti_gravity = True
 
+
         print("jump: {}".format(self.change_y))
 
 
@@ -219,8 +222,6 @@ class Mario(pygame.sprite.Sprite):
     def change_y(self, new_y):
         if new_y < 0: #We are jumping
             self.state = MARIO_STATE_JUMPING
-        elif new_y == 0 or new_y == 1: #just touch ground
-            self.state = MARIO_STATE_NORMAL
 
         self.__change_y = new_y
 

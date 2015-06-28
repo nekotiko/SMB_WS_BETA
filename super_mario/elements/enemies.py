@@ -1,11 +1,15 @@
-from utils.sprite_loader import IMAGE_SLIDER
-
 __author__ = 'bakeneko'
 
 import pygame as pg
 import utils.constants as c
+from utils.sprite_loader import IMAGE_SLIDER
+
+
+
 
 class Enemy(pg.sprite.Sprite):
+
+    count = 0
 
     """Base class for all enemies (Goombas, Koopas, etc.)"""
     def __init__(self):
@@ -22,7 +26,8 @@ class Enemy(pg.sprite.Sprite):
         self.state = c.WALK
         self.level = level
 
-        self.name = name
+        self.name = name + str(Enemy.count)
+        Enemy.count += 1
         self.direction = direction
         setup_frames()
 
@@ -84,7 +89,7 @@ class Enemy(pg.sprite.Sprite):
         except ValueError: #The is nothing to do we don't exist anymore
             pass
 
-        enemy_hit_list.extend(block_hit_list)
+        block_hit_list.extend(enemy_hit_list)
 
         for block in block_hit_list:
             # If we are moving right,
@@ -139,16 +144,6 @@ class Enemy(pg.sprite.Sprite):
         pass
 
 
-    def death_jumping(self):
-        """Death animation
-        self.rect.y += self.y_vel
-        self.rect.x += self.x_vel
-        self.y_vel += self.gravity
-
-        if self.rect.y > 600:
-            self.kill()
-        """
-
     def start_death_jump(self, direction):
         print("DEATH JUMP")
         """Transitions enemy into a DEATH JUMP state"""
@@ -171,10 +166,15 @@ class Enemy(pg.sprite.Sprite):
 
     def update(self):
         """Updates enemy behavior"""
-        self.current_time += self.level.physics_info['seconds']
-        self.handle_state()
-        self.animation()
+        #We only want enemies to move when we are close
+        pos = abs(self.level.world_shift - c.SCREEN_WIDTH)
 
+        if self.rect.x <= pos:
+            self.current_time += self.level.physics_info['seconds']
+            self.handle_state()
+            self.animation()
+            if self.rect.x <= - c.BLOCK_SIZE * 5: #Too far behind let's get rid of it
+                self.kill()
 
 
 

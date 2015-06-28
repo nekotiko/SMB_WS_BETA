@@ -27,13 +27,13 @@ def load_level(level_instance, lvl=1):
                     level_instance.add_platform(BrickPlatform(a_x, a_y))
 
                 elif compare_with_depth(color, MAP_QUESTION_BLOCK):
-                    level_instance.add_brick(QuestionBox(a_x, a_y))
+                    level_instance.add_brick(QuestionBox(a_x, a_y, level_instance))
 
                 elif compare_with_depth(color, MAP_BRICK):
                     level_instance.add_brick(Brick(a_x, a_y))
 
                 elif compare_with_depth(color, MAP_BRICK_HOLDER):
-                    level_instance.add_brick(Brick(a_x, a_y))
+                    level_instance.add_brick(Brick(a_x, a_y,))
 
                 elif compare_with_depth(color, MAP_SOLID_BLOCK):
                     level_instance.add_platform(SolidPlatform(a_x, a_y))

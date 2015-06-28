@@ -24,10 +24,10 @@ BRICK_DIMENTION = {
         'broken_brick': (68, 20, 8, 8),
         'solid_brick': (0, 16, 16, 16),
 
-        'question_mark_1': (384, 0, 16, 16),
-        'question_mark_2': (400, 0, 16, 16),
-        'question_mark_3': (416, 0, 16, 16),
-        'question_mark_4': (432, 0, 16, 16),#empty
+        'question_mark_0': (384, 0, 16, 16),
+        'question_mark_1': (400, 0, 16, 16),
+        'question_mark_2': (416, 0, 16, 16),
+        'question_mark_3': (432, 0, 16, 16),#empty
 
         'mario_small_walk_0' : (178, 32, 12, 16),
         'mario_small_walk_1' : (80, 32, 14, 16),
