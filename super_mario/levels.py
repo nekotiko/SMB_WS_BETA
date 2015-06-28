@@ -25,7 +25,8 @@ class Level():
         # How far this world has been scrolled left/right
         self.world_shift = 0
         self.level_limit = -1000
-        self.stats = Stats()
+        self.stats = Stats(400)
+
 
         """ Constructor. Pass in a handle to player. Needed for when moving platforms
             collide with the player. """
@@ -57,7 +58,7 @@ class Level():
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
         self.animation_list.draw(screen)
-        self.stats.render_stats(screen)
+        self.stats.render_stats(screen, self)
 
 
 

@@ -37,16 +37,22 @@ __author__ = 'bakeneko'
 
 class Stats(object):
 
-    def __init__(self):
+    def __init__(self, time=400):
         self.font = pygame.font.Font('../assets/font/font.ttf', 16)
         self.world = ' 1-1 '
         self.worltime  = 0
         self.lives = 3
         self.score = 0
         self.coins = 0
-        self.time = 0
+        self.time = 400
 
-    def render_stats(self, screen):
+
+    def set_level_time(self, time):
+        self.time = time
+
+    def render_stats(self, screen, level):
+
+        self.time -= level.physics_info['seconds']
 
         ren = self.font.render("MARIO", 1, (255, 255, 255))
         screen.blit(ren, (BLOCK_SIZE, 16))
@@ -66,7 +72,7 @@ class Stats(object):
         ren1 = self.font.render("TIME".format(self.time), 1, (255, 255, 255))
         screen.blit(ren1, (BLOCK_SIZE * 16, 16))
 
-        ren2 = self.font.render(" {:03}".format(self.time), 1, WHITE)
+        ren2 = self.font.render(" {:03}".format(int(self.time)), 1, WHITE)
         screen.blit(ren2, (BLOCK_SIZE * 16, 33))
 
 
