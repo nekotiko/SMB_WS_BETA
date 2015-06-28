@@ -278,6 +278,8 @@ class DyingMario(pygame.sprite.Sprite):
         self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * self.level.physics_info['seconds']
         self.change_y = (-PY_JUMP_Y_VELOCITY_3 * self.level.physics_info['seconds']) + self.gravity
         self.rect.y += self.change_y
+        if self.rect.y >= SCREEN_HEIGHT + self.rect.height:
+            self.kill()
 
 
 
