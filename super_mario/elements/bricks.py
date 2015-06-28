@@ -34,6 +34,8 @@ class Brick(pg.sprite.Sprite):
         pg.sprite.Sprite.__init__(self)
         self.frames = []
         self.frame_index = 0
+        self.opened_frame = None
+
         if setup_frames:
             setup_frames()
         else:
@@ -106,6 +108,9 @@ class Brick(pg.sprite.Sprite):
 
     def start_bump(self):
         """Transitions brick into BUMPED state"""
+        if self.state == c.OPENED:
+            return
+
         self.y_vel = -6
 
         if self.contents == '6coins':
@@ -115,11 +120,14 @@ class Brick(pg.sprite.Sprite):
                 #self.group.add(coin.Coin(self.rect.centerx, self.rect.y, score_group))
                 self.coin_total -= 1
                 if self.coin_total == 0:
-                    self.frame_index = 1
+                    self.frame_index = 0
+                    self.frames = self.opened_frame
                     self.image = self.frames[self.frame_index]
+
         elif self.contents == 'star':
             #setup.SFX['powerup_appears'].play()
-            self.frame_index = 1
+            self.frame_index = 0
+            self.frames = self.opened_frame
             self.image = self.frames[self.frame_index]
 
         self.state = c.BUMPED
@@ -127,7 +135,7 @@ class Brick(pg.sprite.Sprite):
 
     def opened(self):
         """Action during OPENED state"""
-        self.frame_index = 1
+        self.frame_index = 0
         self.image = self.frames[self.frame_index]
 
         if self.contents == 'star' and self.powerup_in_box:
@@ -137,16 +145,18 @@ class Brick(pg.sprite.Sprite):
 
 class QuestionBox(Brick):
 
-    def __init__(self, x, y, level, contents='coins'):
+    def __init__(self, x, y, level, contents='6coins'):
 
-        Brick.__init__(self, x, y, self.setup_frames)
+        Brick.__init__(self, x, y, self.setup_frames, contents)
 
         self.frame_index = 0
         self.level = level
         self.image = self.frames[self.frame_index]
+        self.opened_frame = [IMAGE_SLIDER.get_image('question_mark_3')]
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.coin_total = 1
         self.current_time = 0
 
     def setup_frames(self):
@@ -157,15 +167,14 @@ class QuestionBox(Brick):
             self.frames.append(IMAGE_SLIDER.get_image('question_mark_{}'.format(num)))
 
     def update(self):
-        self.current_time += 5 * self.level.physics_info['seconds']
-        if self.current_time > 5:
-            self.current_time = 0
-
-        self.frame_index = int(self.current_time)
-        self.image = self.frames[self.frame_index]
 
         """Determines brick behavior based on state"""
         if self.state == c.RESTING:
+            self.current_time += 5 * self.level.physics_info['seconds']
+            if self.current_time > 5:
+                self.current_time = 0
+            self.frame_index = int(self.current_time)
+            self.image = self.frames[self.frame_index]
             self.resting()
         elif self.state == c.BUMPED:
             self.bumped()

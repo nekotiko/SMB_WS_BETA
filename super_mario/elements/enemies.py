@@ -29,6 +29,7 @@ class Enemy(pg.sprite.Sprite):
         self.name = name + str(Enemy.count)
         Enemy.count += 1
         self.direction = direction
+        self.image_direction = direction
         setup_frames()
 
         self.image = self.frames[self.frame_index]
@@ -47,6 +48,12 @@ class Enemy(pg.sprite.Sprite):
             self.x_vel = -1
         else:
             self.x_vel =  1
+
+        #let's flip the direction
+        if self.direction != self.image_direction:
+            self.image_direction = self.direction
+            for index, image in enumerate(self.frames):
+                self.frames[index] = pg.transform.flip(image, True, False)
 
         self.y_vel = 0
 
@@ -226,14 +233,18 @@ class Turtle(Enemy):
         self.frames.append(
             IMAGE_SLIDER.get_enemies('turtle_2'))
 
-        self.frames.append(pg.transform.flip(self.frames[0], False, True))
+        self.frames.append(IMAGE_SLIDER.get_enemies('turtle_3'))
 
 
     def jumped_on(self):
         """When Mario squishes him"""
-        self.frame_index = 2
-        self.x_vel = 0
+        if self.state != c.JUMPED_ON:
+            self.state = c.JUMPED_ON
+            self.frame_index = 2
+            self.x_vel = 0
+            self.y_vel = 0
+            self.rect.y += 16
 
-        if self.current_time > 0.50: #half second
-            self.kill()
+    def shell_sliding(self):
+        pass
 

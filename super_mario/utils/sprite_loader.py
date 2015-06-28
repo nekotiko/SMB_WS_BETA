@@ -35,6 +35,7 @@ BRICK_DIMENTION = {
         'mario_small_walk_3' : (114, 32, 12, 16),
         'mario_small_walk_4' : (128, 32, 14, 16),
         'mario_small_jumping': (144, 32, 16, 16),
+        'mario_dying': (160, 32, 16, 16),
 
         'goomba_1': (0, 16, 16, 16),
         'goomba_2': (16,16, 16, 16),
@@ -42,7 +43,7 @@ BRICK_DIMENTION = {
 
         'turtle_1': (96, 8, 16, 24),
         'turtle_2': (112,8, 16, 24),
-        'turtle_3': (160,8, 16, 16),
+        'turtle_3': (160,16, 16, 16),
 
         'cloud_1':    (0,320,45,24),
 

@@ -33,6 +33,8 @@ class Level():
         self.enemy_list     = pygame.sprite.Group()
         self.brick_list     = pygame.sprite.Group()
         self.scenario_list  = pygame.sprite.Group()
+        #Animations are elements that interact with nothing and will be removed soon
+        self.animation_list  = pygame.sprite.Group()
         self.player = player
 
 
@@ -41,6 +43,7 @@ class Level():
         """ Update everything in this level."""
         self.platform_list.update()
         self.enemy_list.update()
+        self.animation_list.update()
 
     def draw(self, screen):
         """ Draw everything on this level. """
@@ -53,6 +56,7 @@ class Level():
         self.scenario_list.draw(screen)
         self.platform_list.draw(screen)
         self.enemy_list.draw(screen)
+        self.animation_list.draw(screen)
 
 
 
@@ -86,3 +90,5 @@ class Level():
     def add_scenario(self, scenario):
         self.scenario_list.add(scenario)
 
+    def add_animation(self, animation):
+        self.animation_list.add(animation)

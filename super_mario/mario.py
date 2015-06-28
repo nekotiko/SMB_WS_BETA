@@ -9,8 +9,8 @@ from utils import constants
 import pygame
 
 class Mario(pygame.sprite.Sprite):
-    """ This class represents the bar at the bottom that the player
-    controls. """
+    """ This class represents the super mario it self
+     """
 
 
 
@@ -114,6 +114,7 @@ class Mario(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
                 if self.state == MARIO_STATE_JUMPING:
                     self.state = MARIO_STATE_NORMAL
+
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
                 if isinstance(block, Brick):
@@ -129,9 +130,10 @@ class Mario(pygame.sprite.Sprite):
                 enemy.rect.collidepoint(self.rect.bottomright) or \
                 enemy.rect.collidepoint(self.rect.bottomleft) : #We kill it!
                 self.change_y += -PY_ENEMY_STOMP_Y_SPEED * self.level.physics_info['seconds']
-                enemy.state = JUMPED_ON
+                enemy.jumped_on()
             else:
                 self.kill()
+                self.level.add_animation(DyingMario(self.rect.x, self.rect.y, self.level))
 
 
 
@@ -176,7 +178,7 @@ class Mario(pygame.sprite.Sprite):
             self.__anti_gravity = True
 
 
-        print("jump: {}".format(self.change_y))
+        #print("jump: {}".format(self.change_y))
 
 
 
@@ -253,3 +255,29 @@ class Mario(pygame.sprite.Sprite):
     @fight_gravity.setter
     def fight_gravity(self, fight):
         self.__anti_gravity = fight
+
+
+
+class DyingMario(pygame.sprite.Sprite):
+
+    def __init__(self, x, y, level):
+        # Call the parent's constructor
+        pygame.sprite.Sprite.__init__(self)
+
+        # Set the image the player starts with
+        # Set speed vector of player
+        self.image = IMAGE_SLIDER.get_mario('dying')
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.level = level
+        self.change_y = -PY_JUMP_Y_VELOCITY_3 * self.level.physics_info['seconds']
+        self.gravity = 0
+
+    def update(self):
+        self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * self.level.physics_info['seconds']
+        self.change_y = (-PY_JUMP_Y_VELOCITY_3 * self.level.physics_info['seconds']) + self.gravity
+        self.rect.y += self.change_y
+
+
+
