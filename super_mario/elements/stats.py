@@ -1,6 +1,6 @@
 import pygame
 from utils.constants import WHITE
-from super_mario.utils.constants import BLOCK_SIZE
+from utils.constants import BLOCK_SIZE
 
 __author__ = 'bakeneko'
 
