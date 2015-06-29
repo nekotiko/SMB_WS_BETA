@@ -94,3 +94,6 @@ class Level():
 
     def add_animation(self, animation):
         self.animation_list.add(animation)
+
+    def add_point(self, points):
+        self.stats.score += points

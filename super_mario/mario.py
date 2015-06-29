@@ -25,6 +25,7 @@ class Mario(pygame.sprite.Sprite):
         self.change_x = 0.0
         self.speed = 0
         self.gravity = 0
+        self.jump_physics = {'vel':0, 'antigravity': 0, 'gravity': 0}
         self.__anti_gravity = False
         self.__cutjump = False
         self.__change_y = 0.0
@@ -135,7 +136,11 @@ class Mario(pygame.sprite.Sprite):
                 enemy.rect.collidepoint(self.rect.bottomright) or \
                 enemy.rect.collidepoint(self.rect.bottomleft) : #We kill it!
                 self.change_y = -PY_ENEMY_STOMP_Y_SPEED * self.level.physics_info['seconds']
+                self.jump_physics['vel'] = PY_ENEMY_STOMP_Y_SPEED
+                self.gravity = 0
+                self.state = MARIO_STATE_JUMPING
                 enemy.jumped_on()
+
             else:
                 if enemy.state != JUMPED_ON:
                     self.kill()
@@ -155,22 +160,19 @@ class Mario(pygame.sprite.Sprite):
             if self.state == MARIO_STATE_JUMPING and not self.__cutjump:
 
                 if self.__anti_gravity:
-                    self.gravity += PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
+                    self.gravity += self.jump_physics['antigravity'] * seconds
                 else:
-                    self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+                    self.gravity += self.jump_physics['gravity'] * seconds
 
-                jump_factor = -PY_JUMP_Y_VELOCITY_1 * seconds
+                jump_factor = - self.jump_physics['vel'] * seconds
 
             else:
-                self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+                self.gravity += self.jump_physics['gravity'] * seconds
 
 
             if self.gravity > PY_JUMP_Y_MAX_FALLING_ACC:
                 self.gravity = PY_JUMP_Y_MAX_FALLING_RST * seconds
-                print("Gravity Reset")
 
-
-            print("jump factor {} - gravity {}".format(jump_factor, self.gravity))
             self.change_y = jump_factor + self.gravity
 
 
@@ -195,9 +197,15 @@ class Mario(pygame.sprite.Sprite):
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
             seconds =  self.level.physics_info['seconds']
-            self.change_y = -PY_JUMP_Y_VELOCITY_1 * seconds
+            num = 1
+            #Define constant Values
+            self.jump_physics['vel'] = eval('PY_JUMP_Y_VELOCITY_{}'.format(num))
+            self.jump_physics['antigravity'] = eval('PY_JUMP_Y_HOLDING_GRAVITY_{}'.format(num))
+            self.jump_physics['gravity'] = eval('PY_JUMP_Y_FALLING_GRAVITY_{}'.format(num))
+
+            self.change_y = -self.jump_physics['vel'] * seconds
             self.__anti_gravity = True
-            self.gravity = 0
+            self.gravity = self.jump_physics['antigravity'] * seconds
 
 
 
@@ -296,13 +304,13 @@ class DyingMario(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.level = level
-        self.change_y = -PY_JUMP_Y_VELOCITY_3 * self.level.physics_info['seconds']
+        self.change_y = -PY_JUMP_Y_VELOCITY_1 * self.level.physics_info['seconds']
         self.gravity = 0
 
     def update(self):
         seconds = self.level.physics_info['seconds']
-        self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
-        self.change_y = (-PY_JUMP_Y_VELOCITY_3 * seconds) + self.gravity
+        self.gravity += PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
+        self.change_y = (-PY_JUMP_Y_VELOCITY_1 * seconds) + self.gravity
         self.rect.y += self.change_y
         if self.rect.y >= SCREEN_HEIGHT + self.rect.height:
             self.kill()
