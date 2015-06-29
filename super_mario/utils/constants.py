@@ -85,7 +85,7 @@ MAP_FLAG           = (0, 255, 0)
 MAP_SMALL_CASTLE   = (80, 63, 127)
 MAP_GOOMBA_1       = (0, 255, 255)
 MAP_TURTLE     = (127, 201, 255)
-
+MAP_1UP = (0, 127, 70)
 SCENARIO_BIG_HILL = 0
 SCENARIO_SMALL_HILL = 1
 
@@ -195,13 +195,13 @@ PY_JUMP_Y_VELOCITY_1 = doc_unit_to_pixels_per_second('04000')
 PY_JUMP_Y_VELOCITY_2 = doc_unit_to_pixels_per_second('04000')
 PY_JUMP_Y_VELOCITY_3 = doc_unit_to_pixels_per_second('05000')
 
-PY_JUMP_Y_HOLDING_GRAVITY_1 = doc_unit_to_pixels_per_second('00180')
-PY_JUMP_Y_HOLDING_GRAVITY_2 = doc_unit_to_pixels_per_second('00220')
-PY_JUMP_Y_HOLDING_GRAVITY_3 = doc_unit_to_pixels_per_second('00220')
+PY_JUMP_Y_HOLDING_GRAVITY_1 = doc_unit_to_pixels_per_second('00200')
+PY_JUMP_Y_HOLDING_GRAVITY_2 = doc_unit_to_pixels_per_second('001E0')
+PY_JUMP_Y_HOLDING_GRAVITY_3 = doc_unit_to_pixels_per_second('00280')
 
-PY_JUMP_Y_FALLING_GRAVITY_1 = doc_unit_to_pixels_per_second('00440')
-PY_JUMP_Y_FALLING_GRAVITY_2 = doc_unit_to_pixels_per_second('003E0')
-PY_JUMP_Y_FALLING_GRAVITY_3 = doc_unit_to_pixels_per_second('005D0')
+PY_JUMP_Y_FALLING_GRAVITY_1 = doc_unit_to_pixels_per_second('00700')
+PY_JUMP_Y_FALLING_GRAVITY_2 = doc_unit_to_pixels_per_second('00600')
+PY_JUMP_Y_FALLING_GRAVITY_3 = doc_unit_to_pixels_per_second('00900')
 
 PY_JUMP_Y_MAX_FALLING_ACC = doc_unit_to_pixels_per_second('04800')
 PY_JUMP_Y_MAX_FALLING_RST = doc_unit_to_pixels_per_second('04000')

@@ -26,6 +26,7 @@ class Mario(pygame.sprite.Sprite):
         self.speed = 0
         self.gravity = 0
         self.__anti_gravity = False
+        self.__cutjump = False
         self.__change_y = 0.0
         self.__max_vel = PY_MAX_MARIO_WALK_VEL
         self.__speed_acc = PY_MAX_WALK_ACC
@@ -114,13 +115,17 @@ class Mario(pygame.sprite.Sprite):
                 self.rect.bottom = block.rect.top
                 if self.state == MARIO_STATE_JUMPING:
                     self.state = MARIO_STATE_NORMAL
+                    self.__cutjump = False
 
             elif self.change_y < 0:
                 self.rect.top = block.rect.bottom
+                self.__anti_gravity = False
+                self.__cutjump = True
                 if isinstance(block, Brick):
                     block.start_bump()
 
             # Stop our vertical movement
+            self.gravity = 0
             self.change_y = 0
 
         #let's kill some enemies. or be killed :P
@@ -129,11 +134,12 @@ class Mario(pygame.sprite.Sprite):
             if enemy.rect.collidepoint(self.rect.midbottom) or \
                 enemy.rect.collidepoint(self.rect.bottomright) or \
                 enemy.rect.collidepoint(self.rect.bottomleft) : #We kill it!
-                self.change_y += -PY_ENEMY_STOMP_Y_SPEED * self.level.physics_info['seconds']
+                self.change_y = -PY_ENEMY_STOMP_Y_SPEED * self.level.physics_info['seconds']
                 enemy.jumped_on()
             else:
-                self.kill()
-                self.level.add_animation(DyingMario(self.rect.x, self.rect.y, self.level))
+                if enemy.state != JUMPED_ON:
+                    self.kill()
+                    self.level.add_animation(DyingMario(self.rect.x, self.rect.y, self.level))
 
 
 
@@ -144,13 +150,28 @@ class Mario(pygame.sprite.Sprite):
 
         else:
             seconds = self.level.physics_info['seconds']
-            anti_gravity_factor = 0
-            if self.__anti_gravity:
-                anti_gravity_factor = - PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
+            jump_factor = 0
 
-            self.gravity = PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
-            #print("Antigravity {} - gravity {}".format(anti_gravity_factor, self.gravity))
-            self.change_y += anti_gravity_factor + self.gravity
+            if self.state == MARIO_STATE_JUMPING and not self.__cutjump:
+
+                if self.__anti_gravity:
+                    self.gravity += PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds
+                else:
+                    self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+
+                jump_factor = -PY_JUMP_Y_VELOCITY_1 * seconds
+
+            else:
+                self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+
+
+            if self.gravity > PY_JUMP_Y_MAX_FALLING_ACC:
+                self.gravity = PY_JUMP_Y_MAX_FALLING_RST * seconds
+                print("Gravity Reset")
+
+
+            print("jump factor {} - gravity {}".format(jump_factor, self.gravity))
+            self.change_y = jump_factor + self.gravity
 
 
 
@@ -173,9 +194,11 @@ class Mario(pygame.sprite.Sprite):
 
         # If it is ok to jump, set our speed upwards
         if len(platform_hit_list) > 0 or self.rect.bottom >= constants.SCREEN_HEIGHT:
-            self.change_y = -PY_JUMP_Y_VELOCITY_1 * self.level.physics_info['seconds']
-            self.gravity = 0
+            seconds =  self.level.physics_info['seconds']
+            self.change_y = -PY_JUMP_Y_VELOCITY_1 * seconds
             self.__anti_gravity = True
+            self.gravity = 0
+
 
 
         #print("jump: {}".format(self.change_y))
@@ -255,6 +278,8 @@ class Mario(pygame.sprite.Sprite):
     @fight_gravity.setter
     def fight_gravity(self, fight):
         self.__anti_gravity = fight
+        print("NO Antigravity")
+        #self.__cutjump = True
 
 
 
@@ -275,8 +300,9 @@ class DyingMario(pygame.sprite.Sprite):
         self.gravity = 0
 
     def update(self):
-        self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * self.level.physics_info['seconds']
-        self.change_y = (-PY_JUMP_Y_VELOCITY_3 * self.level.physics_info['seconds']) + self.gravity
+        seconds = self.level.physics_info['seconds']
+        self.gravity += PY_JUMP_Y_FALLING_GRAVITY_1 * seconds
+        self.change_y = (-PY_JUMP_Y_VELOCITY_3 * seconds) + self.gravity
         self.rect.y += self.change_y
         if self.rect.y >= SCREEN_HEIGHT + self.rect.height:
             self.kill()
