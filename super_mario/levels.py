@@ -1,3 +1,4 @@
+from elements.animations import Points
 
 __author__ = 'bakeneko'
 
@@ -79,6 +80,9 @@ class Level():
         for scenario in self.scenario_list:
             scenario.rect.x += shift_x
 
+        for animation in self.animation_list:
+            animation.rect.x += shift_x
+
     def add_platform(self, platform):
         self.platform_list.add(platform)
 
@@ -95,5 +99,8 @@ class Level():
     def add_animation(self, animation):
         self.animation_list.add(animation)
 
-    def add_point(self, points):
+    def add_point(self, points, rect=None, display=True):
         self.stats.score += points
+        if rect and display:
+            point_animation = Points(points, rect.x, rect.y, self)
+            self.add_animation(point_animation)

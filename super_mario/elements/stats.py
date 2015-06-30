@@ -1,44 +1,15 @@
 import pygame
 from utils.constants import WHITE
 from utils.constants import BLOCK_SIZE
+from utils.loader import get_font
 
 __author__ = 'bakeneko'
-
-"""
- def draw_stats(self):
-        for i in range(1):
-            self.screen.blit(self.heart2, (16 + i*34, 16))
-        for i in range(self.player.hp):
-            self.screen.blit(self.heart1, (16 + i*34, 16))
-        self.screen.blit(self.heroimg, (313, 16))
-        self.screen.blit(self.heroimg2, (235, 10))
-        lives = self.lives
-        if lives < 0:
-            lives = 0
-        ren = self.font.render("Mario", 1, (255, 255, 255))
-        self.screen.blit(ren, (132-ren.get_width(), 16))
-        ren = self.font.render("Score%06d" % self.score, 1, (255, 255, 255))
-        self.screen.blit(ren, (228-ren.get_width(), 33))
-        ren = self.font.render("x%d" % lives, 1, (255, 255, 255))
-        self.screen.blit(ren, (315+34, 24))
-        ren = self.font.render("x%02d" % self.coin, 1, (255, 255, 255))
-        self.screen.blit(ren, (300-ren.get_width(), 16))
-        ren = self.font.render("FPS    %d" % self.clock.get_fps(), 1, (255, 255, 255))
-        self.screen.blit(ren, (451, 16))
-        ren1 = self.font.render("Time: %d" % self.time, 1, (255, 255, 255))
-        ren2 = self.font.render("Time: %d" % self.time, 1, Color("#ffffff"))
-        self.screen.blit(ren1, (450, 35))
-        self.screen.blit(ren2, (450, 35))
-        if self.time <= 100:
-            ren = self.font.render("GOTTA GO FAST", 1, (255, 255, 255))
-            self.screen.blit(ren, (630-ren.get_width(), 60))
-"""
 
 
 class Stats(object):
 
     def __init__(self, time=400):
-        self.font = pygame.font.Font('../assets/font/font.ttf', 16)
+        self.font = get_font(16)
         self.world = ' 1-1 '
         self.worltime  = 0
         self.lives = 3

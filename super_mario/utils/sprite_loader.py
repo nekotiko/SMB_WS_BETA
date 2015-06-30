@@ -74,7 +74,7 @@ BRICK_DIMENTION = {
 
 
 
-class BricksSlider(object):
+class ImageSlider(object):
 
     def __init__(self):
 
@@ -146,7 +146,7 @@ class BricksSlider(object):
 
 
 
-IMAGE_SLIDER = BricksSlider()
+IMAGE_SLIDER = ImageSlider()
 
 ##Composite Images
 

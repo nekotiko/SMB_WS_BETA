@@ -1,3 +1,5 @@
+from utils.loader import play_sound
+
 __author__ = 'bakeneko'
 
 import pygame as pg
@@ -209,7 +211,8 @@ class Goomba(Enemy):
     def jumped_on(self):
         """When Mario squishes him"""
         if (self.state != c.JUMPED_ON):
-            self.level.add_point(100)
+            self.level.add_point(100, self.rect)
+            play_sound(c.SND_STOMP)
         self.state = c.JUMPED_ON
         self.frame_index = 2
         self.x_vel = 0

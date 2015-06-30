@@ -214,3 +214,32 @@ PY_ENEMY_WALK_SPEED    = doc_unit_to_pixels_per_second('08000')
 
 ##Deduced PY
 PY_MAX_WALK_ACC = PY_MAX_MARIO_WALK_VEL - PY_MIN_MARIO_WALK_VEL
+
+MUTE = False
+
+#Sound:
+SND_B_JUMP = 'big_jump.ogg'
+SND_BRICK_SMASH = 'brick_smash.ogg'
+SND_BUMP = 'bump.ogg'
+SND_COIN = 'coin.ogg'
+SND_COUNTDOWN = 'count_down.ogg'
+SND_FIREBALL = 'fireball.ogg'
+SND_KICK = 'kick.ogg'
+SND_MAIN_THEME_SPEED_UP = 'main_theme_sped_up.ogg'
+SND_ONE_UP = 'one_up.ogg'
+SND_PIPE = 'pipe.ogg'
+SND_POWER_UP = 'powerup.ogg'
+SND_POWER_UP_APPRS = 'powerup_appears.ogg'
+SND_S_JUMP = 'small_jump.ogg'
+SND_STOMP = 'stomp.ogg'
+
+#MUSIC
+MSC_DEATH = 'death.wav'
+MSC_FLAG = 'flagpole.wav'
+MSC_GAME_OVER = 'game_over.ogg'
+MSC_INVINCEBLE = 'invincible.ogg'
+MSC_MAIN_THEME = 'main_theme.ogg'
+MSC_MAIN_THEME_SPEED_UP ='main_theme_sped_up.ogg'
+MSC_OUT_OF_TIME = 'out_of_time.wav'
+MSC_STAGE_CLEAR = 'stage_clear.wav'
+MSC_WORLD_CLEAR = 'world_clear.wav'
