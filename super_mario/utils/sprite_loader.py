@@ -13,7 +13,7 @@ MARIO_SPRITE_GAP = 2
 TILE_IMAGE = None
 MARIO_IMAGES = None
 ENEMY_IMAGES = None
-
+ITEMS_IMAGES = None
 
 
 #x,y, width, height
@@ -69,6 +69,17 @@ BRICK_DIMENTION = {
         'castle_5': (208, 0, 16, 16),
         'castle_6': (224, 0, 16, 16),
 
+        'collected_coin_0': (5, 112, 10, 14 ),
+        'collected_coin_1': (18, 112, 10, 14),
+        'collected_coin_2': (36, 112, 10, 15),
+        'collected_coin_3': (54, 112, 10, 16),
+
+        'score_coin_0': (0, 160, 6, 8),
+        'score_coin_1': (8, 160, 6, 8),
+        'score_coin_2': (16, 160, 6, 8),
+
+        'score_x': (40, 160, 8, 8),
+
 }
 
 
@@ -80,6 +91,10 @@ class ImageSlider(object):
 
         print "BrickSlider Inited"
         self.images = {}
+
+    def get_item(self, name, multiplier=SIZE_MULTIPLIER):
+        image = self._get_image(name, '../assets/item_objects.png', 'items', multiplier)
+        return image
 
     def get_mario(self, name):
         return self._get_image('mario_' + name, '../assets/mario_bros.png', 'mario')
@@ -100,26 +115,31 @@ class ImageSlider(object):
 
         return image
 
-    def _cut_image(self, name, path, type, multiplier=SIZE_MULTIPLIER):
+    def _cut_image(self, name, path, type_name, multiplier=SIZE_MULTIPLIER):
         global TILE_IMAGE
         global MARIO_IMAGES
         global ENEMY_IMAGES
+        global ITEMS_IMAGES
 
+        if not ITEMS_IMAGES and type_name == 'items':
+            ITEMS_IMAGES = self.convert(pg.image.load(path))
 
-        if not TILE_IMAGE and type == 'asset':
+        if not TILE_IMAGE and type_name == 'asset':
             TILE_IMAGE = self.convert(pg.image.load(path))
 
-        if not MARIO_IMAGES and type == 'mario':
+        if not MARIO_IMAGES and type_name == 'mario':
             MARIO_IMAGES = self.convert(pg.image.load(path))
 
-        if not ENEMY_IMAGES and type == 'enemies':
+        if not ENEMY_IMAGES and type_name == 'enemies':
             ENEMY_IMAGES = self.convert(pg.image.load(path))
 
         IMAGE = TILE_IMAGE
-        if type == 'mario':
+        if type_name == 'mario':
             IMAGE = MARIO_IMAGES
-        elif type == 'enemies':
+        elif type_name == 'enemies':
             IMAGE = ENEMY_IMAGES
+        elif type_name == 'items':
+            IMAGE = ITEMS_IMAGES
 
         dimensions = BRICK_DIMENTION[name]
         width, height = dimensions[2:4]

@@ -1,4 +1,5 @@
 from utils.sprite_loader import get_pipe
+from elements.animations import CollectedCoin
 from utils.constants import BRICK_SIZE_MULTIPLIER, BLACK, WHITE
 from utils.sprite_loader import IMAGE_SLIDER
 
@@ -24,6 +25,7 @@ class SolidPlatform(BrickPlatform):
 
     def __init__(self, x, y):
         BrickPlatform.__init__(self, x, y, 'solid_brick')
+
 
 class Brick(pg.sprite.Sprite):
     """Bricks that can be destroyed"""
@@ -142,7 +144,6 @@ class Brick(pg.sprite.Sprite):
             #self.group.add(powerups.Star(self.rect.centerx, self.rest_height))
             self.powerup_in_box = False
 
-
 class QuestionBox(Brick):
 
     def __init__(self, x, y, level, contents='6coins'):
@@ -166,6 +167,14 @@ class QuestionBox(Brick):
         for num in xrange(0, 3):
             self.frames.append(IMAGE_SLIDER.get_image('question_mark_{}'.format(num)))
 
+    def start_bump(self):
+        if self.state != c.OPENED:
+            cc = CollectedCoin(self.rect.centerx, self.rect.centery, self.level)
+            self.level.add_animation(cc)
+
+        Brick.start_bump(self)
+
+
     def update(self):
 
         """Determines brick behavior based on state"""
@@ -177,6 +186,7 @@ class QuestionBox(Brick):
             self.image = self.frames[self.frame_index]
             self.resting()
         elif self.state == c.BUMPED:
+
             self.bumped()
         elif self.state == c.OPENED:
             self.opened()

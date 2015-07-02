@@ -12,7 +12,7 @@ from mario import Mario
 def main():
     """ Main Program """
     pygame.init()
-    FPS = 120
+    FPS = 60
 
     # Used to manage how fast the screen updates
     clock = pygame.time.Clock()

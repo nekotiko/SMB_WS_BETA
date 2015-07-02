@@ -26,7 +26,7 @@ class Level():
         # How far this world has been scrolled left/right
         self.world_shift = 0
         self.level_limit = -1000
-        self.stats = Stats(400)
+
 
 
         """ Constructor. Pass in a handle to player. Needed for when moving platforms
@@ -39,6 +39,7 @@ class Level():
         self.animation_list  = pygame.sprite.Group()
         self.player = player
 
+        self.stats = Stats(self, 400)
 
     # Update everythign on this level
     def update(self):

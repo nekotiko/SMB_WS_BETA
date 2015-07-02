@@ -6,7 +6,7 @@ __author__ = 'bakeneko'
 
 import pygame
 from utils.sprite_loader import IMAGE_SLIDER
-from utils.constants import *
+from super_mario.utils.constants import *
 
 class DyingMario(pygame.sprite.Sprite):
 
@@ -56,5 +56,54 @@ class Points(pygame.sprite.Sprite):
         self.rect.y += -10 * seconds
         self.timeout -= seconds
         if self.timeout <= 0:
+            self.kill()
+
+
+
+class CollectedCoin(pygame.sprite.Sprite):
+
+    def __init__(self, x, y, level):
+
+        pygame.sprite.Sprite.__init__(self)
+
+        self.frame_index = 0
+        self.frames = []
+        self.level = level
+        for index in xrange(0, 4):
+            self.frames.append(IMAGE_SLIDER.get_item('collected_coin_{}'.format(index), 1))
+
+        self.image = self.frames[self.frame_index]
+        self.rect = self.frames[1].get_rect() #1 is the wider coin
+        self.rect.x = x
+        self.rect.y = y
+
+        self.timeout = 1
+        self.gravity = 0
+
+        self.frame_count = 0
+        self.level.stats.coins += 1
+
+    def update(self):
+        if self.timeout < 0: return
+        seconds = self.level.physics_info['seconds']
+        self.frame_count += 1
+
+        if self.frame_count == 2:
+            self.frame_count = 0
+            self.frame_index += 1
+            if self.frame_index == 4:
+                self.frame_index = 0
+
+        self.image = self.frames[self.frame_index]
+
+        #if self.frame_index == 0:
+        self.gravity += (PY_JUMP_Y_HOLDING_GRAVITY_1 * seconds)
+        self.rect.y += (-PY_JUMP_Y_VELOCITY_1 * seconds) + self.gravity
+        self.timeout -= seconds
+            #print(self.frame_index)
+
+        if self.timeout <= 0:
+            point = Points(200, self.rect.x, self.rect.y, self.level)
+            self.level.add_animation(point)
             self.kill()
 
