@@ -80,6 +80,10 @@ BRICK_DIMENTION = {
 
         'score_x': (40, 160, 8, 8),
 
+        'pole_body': (256, 144, 16, 16),
+        'pole_top':  (256, 128, 16, 16),
+        'pole_flag': (128,32, 16, 16)
+
 }
 
 
@@ -276,3 +280,20 @@ def get_hill(size):
         j = 0
 
     return hill
+
+def get_pole():
+    width = BLOCK_SIZE
+    height = BLOCK_SIZE * 10
+
+    pole = pg.Surface([width, height], pg.SRCALPHA, 32)
+
+    top = IMAGE_SLIDER.get_image('pole_top')
+    body= IMAGE_SLIDER.get_image('pole_body')
+    flag = IMAGE_SLIDER.get_image('pole_flag')
+
+    pole.blit(top,(0, 0))
+    for y in xrange(BLOCK_SIZE, BLOCK_SIZE*10, BLOCK_SIZE):
+
+        pole.blit(body, (0, y))
+
+    return pole

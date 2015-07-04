@@ -6,6 +6,8 @@ from elements.scenario import ScenarioItem
 from elements.scenario import Hill
 from utils.sprite_loader import get_bush, get_castle
 from elements.scenario import ScenarioItemWithImage, ScenarioCastle
+from super_mario.elements.scenario import Pole
+from super_mario.utils.sprite_loader import get_pole
 
 __author__ = 'bakeneko'
 
@@ -44,9 +46,10 @@ def load_level(level_instance, lvl=1):
                 elif compare_with_depth(color, MAP_BIG_MOUNTAIN):
                     level_instance.add_scenario(Hill(a_x, a_y, SCENARIO_BIG_HILL))
 
+
                 elif compare_with_depth(color, MAP_SMALL_MOUNTAIN):
                     level_instance.add_scenario(Hill(a_x, a_y, SCENARIO_SMALL_HILL))
-
+                    #level_instance.add_scenario(Pole(a_x, a_y))
 
                 elif compare_with_depth(color, MAP_SHORT_PIPE):
                     level_instance.add_platform(Pipe(a_x, a_y))
@@ -75,6 +78,9 @@ def load_level(level_instance, lvl=1):
 
                 elif  compare_with_depth(color, MAP_TURTLE):
                     level_instance.add_enemy(Turtle(a_x, a_y, level_instance))
+
+                elif  compare_with_depth(color, MAP_FLAG):
+                    level_instance.add_scenario(Pole(a_x, a_y))
 
                 elif compare_with_depth(color, MAP_COIN):
 

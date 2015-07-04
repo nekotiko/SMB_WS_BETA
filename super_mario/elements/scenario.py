@@ -1,5 +1,6 @@
 from utils.sprite_loader import get_hill
-from utils.constants import SCENARIO_BIG_HILL
+from super_mario.utils.sprite_loader import get_pole
+from utils.constants import SCENARIO_BIG_HILL, BLOCK_SIZE
 
 __author__ = 'bakeneko'
 
@@ -33,9 +34,6 @@ class ScenarioCastle(pg.sprite.Sprite):
         self.rect = self.image.get_rect(bottomleft=(x+32,y+32))
 
 
-
-
-
 class Hill(pg.sprite.Sprite):
 
     def __init__(self, x, y, size=SCENARIO_BIG_HILL):
@@ -44,4 +42,10 @@ class Hill(pg.sprite.Sprite):
         self.rect = self.image.get_rect(bottomleft=(x, y+ 32))
 
 
-
+class Pole(pg.sprite.Sprite):
+    def __init__(self, x, y, size=SCENARIO_BIG_HILL):
+        pg.sprite.Sprite.__init__(self)
+        self.image = get_pole()
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y - BLOCK_SIZE * 9
